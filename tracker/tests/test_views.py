@@ -32,3 +32,24 @@ class GetAllFoodsTest(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, serialized.data)
+
+class GetSingleFoodTest(TestCase):
+
+    def setUp(self):
+        Food.objects.create(
+            name='Banana',
+            calories=140
+        )
+        Food.objects.create(
+            name='Twizzler',
+            calories=240
+        )
+
+    def test_get_single_food(self):
+        response = client.get(reverse('get_delete_update_food', kwargs={'pk': 1}))
+
+        food = Food.objects.get(pk=1)
+        serialized = FoodSerializer(food)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, serialized.data)
