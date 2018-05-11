@@ -4,6 +4,7 @@ from rest_framework import status
 from .models import Food
 from .serializers import FoodSerializer
 from django.http import HttpResponse
+import code
 
 def index(request):
     return HttpResponse("Hello world.  Your're at the calorie tracker index!!!")
@@ -34,4 +35,12 @@ def get_post_foods(request):
         serialized = FoodSerializer(foods, many=True)
         return Response(serialized.data)
     elif request.method == 'POST':
-        return Response({})
+        data = {
+            'name': request.data.get('food').get('name'),
+            'calories': request.data.get('food').get('calories')
+        }
+        serialized = FoodSerializer(data=data)
+        if serialized.is_valid():
+            serialized.save()
+            return Response(serialized.data, status=status.HTTP_201_CREATED)
+        return Response(serialized.errors, status=status.HTTP_400_BAD_REQUEST)
