@@ -88,23 +88,23 @@ class CreateFoodTest(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    # def test_does_not_create_food_with_no_calories(self):
-    #     response = client.post(
-    #         reverse('get_post_foods'),
-    #         data=json.dumps(self.invalid_payload_1),
-    #         content_type='application/json'
-    #     )
-    #
-    #     self.assertEqual(response.status_code.HTTP_400_BAD_REQUEST)
-    #
-    # def test_does_not_create_food_with_no_name(self):
-    #     response = client.post(
-    #         reverse('get_post_foods'),
-    #         data=json.dumps(self.invalid_payload_2),
-    #         content_type='application/json'
-    #     )
-    #
-    #     self.assertEqual(response.status_code.HTTP_400_BAD_REQUEST)
+    def test_does_not_create_food_with_no_calories(self):
+        response = client.post(
+            reverse('get_post_foods'),
+            data=json.dumps(self.invalid_payload_1),
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_does_not_create_food_with_no_name(self):
+        response = client.post(
+            reverse('get_post_foods'),
+            data=json.dumps(self.invalid_payload_2),
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 # class EditFoodTest(TestCase):
 #
