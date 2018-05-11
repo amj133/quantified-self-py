@@ -4,7 +4,9 @@ from rest_framework import status
 from .models import Food
 from .serializers import FoodSerializer
 from django.http import HttpResponse
+# from django.views.decorators.csrf import ensure_csrf_cookie
 import code
+# @ensure_csrf_cookie
 
 def index(request):
     return HttpResponse("Hello world.  Your're at the calorie tracker index!!!")
@@ -30,6 +32,7 @@ def get_delete_update_food(request, pk):
 
 @api_view(['GET', 'POST'])
 def get_post_foods(request):
+    # code.interact(local=dict(globals(), **locals()))
     if request.method == 'GET':
         foods = Food.objects.all()
         serialized = FoodSerializer(foods, many=True)

@@ -85,8 +85,11 @@ class CreateFoodTest(TestCase):
             data=json.dumps(self.valid_payload),
             content_type='application/json'
         )
+        food = Food.objects.get(pk=1)
+        serialized = FoodSerializer(food)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data, serialized.data)
 
     def test_does_not_create_food_with_no_calories(self):
         response = client.post(
@@ -106,13 +109,38 @@ class CreateFoodTest(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-# class EditFoodTest(TestCase):
-#
-#     def setUp(self):
-#         Food.objects.create(
-#             name='Banana',
-#             calories=140
-#         )
-#
-#     def test_edits_food(self):
-#         response = client.patch(reverse('get_delete_update_food', kwargs={'pk': 1}))
+class UpdateFoodTest(TestCase):
+
+    def setUp(self):
+        Food.objects.create(
+            name='Banana',
+            calories=140
+        )
+        self.valid_payload = {
+            'food': {
+                'name': 'Naner',
+                'calories': 145
+            }
+        }
+        self.invalid_payload_1 = {
+            'food': {
+                'name': 'Naner',
+            }
+        }
+        self.invalid_payload_2 = {
+            'food': {
+                'calories': 145,
+            }
+        }
+
+    def test_edits_food(self):
+        response = client.patch(
+            reverse('get_delete_update_food', kwargs={'pk': 1}),
+            data=json.dumps(self.valid_payload),
+            content_type='application/json'
+            )
+        food = Food.objects.get(pk=1)
+        serialized = FoodSerializer(food)
+
+        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
+        self.assertEqual(response.data, serialized.data)
