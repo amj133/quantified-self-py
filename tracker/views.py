@@ -29,6 +29,7 @@ def get_delete_update_food(request, pk):
         return Response({})
     elif request.method == 'PATCH':
         serialized = FoodSerializer(food, data=request.data['food'])
+        # code.interact(local=dict(globals(), **locals()))
         if serialized.is_valid():
             serialized.save()
             return Response(serialized.data, status=status.HTTP_202_ACCEPTED)

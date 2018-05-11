@@ -122,16 +122,6 @@ class UpdateFoodTest(TestCase):
                 'calories': 145
             }
         }
-        self.invalid_payload_1 = {
-            'food': {
-                'name': 'Naner',
-            }
-        }
-        self.invalid_payload_2 = {
-            'food': {
-                'calories': 145,
-            }
-        }
 
     def test_edits_food(self):
         response = client.patch(
@@ -144,3 +134,12 @@ class UpdateFoodTest(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
         self.assertEqual(response.data, serialized.data)
+
+    def test_returns_404_if_food_not_found(self):
+        response = client.patch(
+            reverse('get_delete_update_food', kwargs={'pk': 2}),
+            data=json.dumps(self.valid_payload),
+            content_type='application/json'
+            )
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
