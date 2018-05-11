@@ -28,11 +28,14 @@ def get_delete_update_food(request, pk):
     elif request.method == 'DELETE':
         return Response({})
     elif request.method == 'PATCH':
-        return Response({})
+        serialized = FoodSerializer(food, data=request.data['food'])
+        if serialized.is_valid():
+            serialized.save()
+            return Response(serialized.data, status=status.HTTP_202_ACCEPTED)
+        return Response(serialized.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'POST'])
 def get_post_foods(request):
-    # code.interact(local=dict(globals(), **locals()))
     if request.method == 'GET':
         foods = Food.objects.all()
         serialized = FoodSerializer(foods, many=True)
