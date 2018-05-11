@@ -53,3 +53,8 @@ class GetSingleFoodTest(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, serialized.data)
+
+    def test_returns_404_if_food_not_found(self):
+        response = client.get(reverse('get_delete_update_food', kwargs={'pk': 4}))
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
