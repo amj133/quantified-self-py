@@ -4,8 +4,8 @@ from rest_framework import status
 from .models import Food
 from .serializers import FoodSerializer
 from django.http import HttpResponse
-# from django.views.decorators.csrf import ensure_csrf_cookie
 import code
+# from django.views.decorators.csrf import ensure_csrf_cookie
 # @ensure_csrf_cookie
 
 def index(request):
