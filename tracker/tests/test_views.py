@@ -143,3 +143,23 @@ class UpdateFoodTest(TestCase):
             )
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+class DeleteFoodTest(TestCase):
+
+    def setUp(self):
+        Food.objects.create(
+            name='Banana',
+            calories=140
+        )
+        Food.objects.create(
+            name='Avocado',
+            calories=240
+        )
+
+    def test_deletes_food(self):
+        response = client.delete(reverse('get_delete_update_food', kwargs={'pk': 2}))
+
+        foods = Food.objects.all()
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(foods.count, 1)
