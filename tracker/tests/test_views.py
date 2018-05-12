@@ -162,4 +162,9 @@ class DeleteFoodTest(TestCase):
         foods = Food.objects.all()
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(foods.count, 1)
+        self.assertEqual(foods.count(), 1)
+
+    def test_returns_404_if_food_not_found(self):
+        response = client.delete(reverse('get_delete_update_food', kwargs={'pk': 3}))
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
