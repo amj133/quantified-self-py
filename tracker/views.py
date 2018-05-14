@@ -57,7 +57,11 @@ def get_meals(request):
 
 @api_view(['GET'])
 def get_meal_foods(request, pk):
-    if request.method == 'GET':
+    try:
         meal = Meal.objects.get(pk=pk)
+    except Meal.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
         serialized = MealSerializer(meal)
         return Response(serialized.data)
