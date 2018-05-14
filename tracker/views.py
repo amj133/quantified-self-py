@@ -25,7 +25,6 @@ def get_delete_update_food(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
     elif request.method == 'PATCH':
         serialized = FoodSerializer(food, data=request.data['food'])
-        # code.interact(local=dict(globals(), **locals()))
         if serialized.is_valid():
             serialized.save()
             return Response(serialized.data, status=status.HTTP_202_ACCEPTED)
@@ -51,6 +50,14 @@ def get_post_foods(request):
 @api_view(['GET'])
 def get_meals(request):
     if request.method == 'GET':
+        meal_id = request.data
         meals = Meal.objects.all()
         serialized = MealSerializer(meals, many=True)
+        return Response(serialized.data)
+
+@api_view(['GET'])
+def get_meal_foods(request, pk):
+    if request.method == 'GET':
+        meal = Meal.objects.get(pk=pk)
+        serialized = MealSerializer(meal)
         return Response(serialized.data)
