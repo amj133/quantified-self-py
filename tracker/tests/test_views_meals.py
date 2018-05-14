@@ -38,5 +38,9 @@ class GetAllMealsTest(TestCase):
         meals = Meal.objects.all()
         serialized = MealSerializer(meals, many=True)
 
+        # code.interact(local=dict(globals(), **locals()))
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data[0]['foods'][0]['name'], 'Banana')
+        self.assertEqual(response.data[1]['foods'][0]['name'], 'Avocado')
         self.assertEqual(response.data, serialized.data)
