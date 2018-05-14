@@ -145,3 +145,13 @@ class DeleteAssociatedFoodFromMeal(TestCase):
 
         twizzler = Food.objects.get(name='Twizzler')
         self.assertEqual(twizzler.name, 'Twizzler')
+
+    def test_returns_404_if_meal_not_found(self):
+        response = client.delete(reverse('post_delete_meal_foods', kwargs={'meal_pk': 2, 'food_pk': 2}))
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_returns_404_if_food_not_found(self):
+        response = client.delete(reverse('post_delete_meal_foods', kwargs={'meal_pk': 1, 'food_pk': 3}))
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
