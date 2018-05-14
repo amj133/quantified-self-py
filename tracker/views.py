@@ -65,3 +65,16 @@ def get_meal_foods(request, pk):
     if request.method == 'GET':
         serialized = MealSerializer(meal)
         return Response(serialized.data)
+
+@api_view(['POST'])
+def post_meal_foods(request, meal_pk, food_pk):
+    try:
+        meal = Meal.objects.get(pk=meal_pk)
+        food = Food.objects.get(pk=food_pk)
+    except Meal.DoesNotExist or Food.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'POST':
+        meal.foods.add(food)
+        message = {'message': 'Successfully added {food.name} to {meal.name}'.format(food = food, meal = meal)}
+        return Response(message, status=status.HTTP_201_CREATED)
