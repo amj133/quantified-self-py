@@ -98,20 +98,47 @@ class AssociatesFoodWithMeal(TestCase):
         breakfast = Meal.objects.get(name='Breakfast')
         self.assertEqual(breakfast.foods.all().__len__(), 1)
 
-        response = client.post(reverse('post_meal_foods', kwargs={'meal_pk': 1, 'food_pk': 2}))
+        response = client.post(reverse('post_delete_meal_foods', kwargs={'meal_pk': 1, 'food_pk': 2}))
         breakfast = Meal.objects.get(name='Breakfast')
-        serialized = MealSerializer(breakfast)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['message'], 'Successfully added Twizzler to Breakfast')
         self.assertEqual(breakfast.foods.all().__len__(), 2)
 
     def test_returns_404_if_meal_not_found(self):
-        response = client.post(reverse('post_meal_foods', kwargs={'meal_pk': 2, 'food_pk': 2}))
+        response = client.post(reverse('post_delete_meal_foods', kwargs={'meal_pk': 2, 'food_pk': 2}))
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_returns_404_if_food_not_found(self):
-        response = client.post(reverse('post_meal_foods', kwargs={'meal_pk': 1, 'food_pk': 3}))
+        response = client.post(reverse('post_delete_meal_foods', kwargs={'meal_pk': 1, 'food_pk': 3}))
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+class DeleteAssociatedFoodFromMeal(TestCase):
+
+    def setUp(self):
+        breakfast = Meal.objects.create(name='Breakfast')
+        banana = Food.objects.create(
+            name='Banana',
+            calories=140
+        )
+        twizzler = Food.objects.create(
+            name='Twizzler',
+            calories=240
+        )
+        breakfast.foods.add(banana)
+        breakfast.foods.add(twizzler)
+
+    def test_deletes_food_from_meal(self):
+        breakfast = Meal.objects.get(name='Breakfast')
+        self.assertEqual(breakfast.foods.all().__len__(), 2)
+        self.assertEqual(breakfast.foods.all()[1].name, 'Twizzler')
+
+        response = client.delete(reverse('post_delete_meal_foods', kwargs={'meal_pk': 2, 'food_pk': 2}))
+        breakfast = Meal.objects.get(name='Breakfast')
+
+        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
+        self.assertEqual(response.data['message'], 'Successfully remove Twizzler from Breakfast')
+        self.assertEqual(breakfast.foods.all().__len__(), 1)
+        self.assertEqual(breakfast.foods.all()[0].name, 'Banana')
