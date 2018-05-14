@@ -2,18 +2,13 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Food
+from .models import Meal
 from .serializers import FoodSerializer
+from .serializers import MealSerializer
 from django.http import HttpResponse
 import code
 # from django.views.decorators.csrf import ensure_csrf_cookie
 # @ensure_csrf_cookie
-
-def index(request):
-    return HttpResponse("Hello world.  Your're at the calorie tracker index!!!")
-
-def foods(request):
-    response = "You're looking at the foods index."
-    return HttpResponse(response)
 
 @api_view(['GET', 'DELETE', 'PATCH'])
 def get_delete_update_food(request, pk):
@@ -52,3 +47,10 @@ def get_post_foods(request):
             serialized.save()
             return Response(serialized.data, status=status.HTTP_201_CREATED)
         return Response(serialized.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def get_meals(request):
+    if request.method == 'GET':
+        meals = Meal.objects.all()
+        serialized = MealSerializer(meals, many=True)
+        return Response(serialized.data)
