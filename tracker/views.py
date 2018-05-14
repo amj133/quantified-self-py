@@ -71,7 +71,7 @@ def post_meal_foods(request, meal_pk, food_pk):
     try:
         meal = Meal.objects.get(pk=meal_pk)
         food = Food.objects.get(pk=food_pk)
-    except Meal.DoesNotExist or Food.DoesNotExist:
+    except (Meal.DoesNotExist, Food.DoesNotExist) as error:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'POST':
