@@ -135,10 +135,13 @@ class DeleteAssociatedFoodFromMeal(TestCase):
         self.assertEqual(breakfast.foods.all().__len__(), 2)
         self.assertEqual(breakfast.foods.all()[1].name, 'Twizzler')
 
-        response = client.delete(reverse('post_delete_meal_foods', kwargs={'meal_pk': 2, 'food_pk': 2}))
+        response = client.delete(reverse('post_delete_meal_foods', kwargs={'meal_pk': 1, 'food_pk': 2}))
         breakfast = Meal.objects.get(name='Breakfast')
 
         self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
-        self.assertEqual(response.data['message'], 'Successfully remove Twizzler from Breakfast')
+        self.assertEqual(response.data['message'], 'Successfully removed Twizzler from Breakfast')
         self.assertEqual(breakfast.foods.all().__len__(), 1)
         self.assertEqual(breakfast.foods.all()[0].name, 'Banana')
+
+        twizzler = Food.objects.get(name='Twizzler')
+        self.assertEqual(twizzler.name, 'Twizzler')

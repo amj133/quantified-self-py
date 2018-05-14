@@ -66,8 +66,8 @@ def get_meal_foods(request, pk):
         serialized = MealSerializer(meal)
         return Response(serialized.data)
 
-@api_view(['POST'])
-def post_meal_foods(request, meal_pk, food_pk):
+@api_view(['POST', 'DELETE'])
+def post_delete_meal_foods(request, meal_pk, food_pk):
     try:
         meal = Meal.objects.get(pk=meal_pk)
         food = Food.objects.get(pk=food_pk)
@@ -78,3 +78,7 @@ def post_meal_foods(request, meal_pk, food_pk):
         meal.foods.add(food)
         message = {'message': 'Successfully added {food.name} to {meal.name}'.format(food = food, meal = meal)}
         return Response(message, status=status.HTTP_201_CREATED)
+    elif request.method == 'DELETE':
+        meal.foods.remove(food)
+        message = {'message': 'Successfully removed {food.name} from {meal.name}'.format(food = food, meal = meal)}
+        return Response(message, status=status.HTTP_202_ACCEPTED)
