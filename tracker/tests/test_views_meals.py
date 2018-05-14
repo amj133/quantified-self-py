@@ -64,7 +64,6 @@ class GetAllFoodsForGivenMealTest(TestCase):
         breakfast.foods.add(twizzler)
         lunch.foods.add(avocado)
 
-
     def test_get_all_foods(self):
         response = client.get(reverse('get_meal_foods', kwargs={'pk': 1}))
 
@@ -74,3 +73,8 @@ class GetAllFoodsForGivenMealTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(meal_and_foods.foods.all()[0].name, 'Banana')
         self.assertEqual(response.data, serialized.data)
+
+    def test_returns_404_if_meal_not_found(self):
+        response = client.get(reverse('get_meal_foods', kwargs={'pk': 12}))
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
