@@ -78,3 +78,30 @@ class GetAllFoodsForGivenMealTest(TestCase):
         response = client.get(reverse('get_meal_foods', kwargs={'pk': 12}))
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+class AssociatesFoodWithMeal(TestCase):
+
+    def setUp(self):
+        breakfast = Meal.objects.create(name='Breakfast')
+        banana = Food.objects.create(
+            name='Banana',
+            calories=140
+        )
+        twizzler = Food.objects.create(
+            name='Twizzler',
+            calories=240
+        )
+        breakfast.foods.add(banana)
+
+
+    def test_adds_food_to_meal(self):
+        breakfast = Meal.objects.get(name='Breakfast')
+        self.assertEqual(breakfast.foods.all().__len__(), 1)
+
+        response = client.post(reverse('post_meal_foods', kwargs={'meal_pk': 1, 'food_pk': 2}))
+        breakfast = Meal.objects.get(name='Breakfast')
+        serialized = MealSerializer(breakfast)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['message'], 'Successfully added Twizzler to Breakfast')
+        self.assertEqual(breakfast.foods.all().__len__(), 2)
