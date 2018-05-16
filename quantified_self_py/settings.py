@@ -25,7 +25,7 @@ SECRET_KEY = '%hz**9y2+8o6@gt&y_^fjr)$iaekw+--@4bjsns-(9j&skksaa'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://stormy-fortress-30140.herokuapp.com/']
+ALLOWED_HOSTS = {'*'}#['https://stormy-fortress-30140.herokuapp.com/']
 
 
 # Application definition
