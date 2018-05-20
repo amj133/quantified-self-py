@@ -1,17 +1,17 @@
 # Quantified-self-py
 
-Visit the deployed app at https://amj133.github.io/quantified-self-fe/index.html.  The deployed site consists of a javascript front end connected to this python Django backend.  The backend consists of several API endpoints that are fetched from the JS frontend depending on user input.  This project was unique in that the front end application was provided to us, and we had to build the backend application first in rails, then in express with node.js, and finall in a language of our choice.  I choose python Django because of its prevalence in the GIS and scientific communities.  Although there was some initial adjustment to Django, I was impressed with how easy it was to adapt to a new framework after building most of my previous applications in Rails.  I plan on building on my python skills by exploring Flask, and specifically how Flask can combine with PostGIS to perform spatial queries.
+Visit the deployed app at https://amj133.github.io/quantified-self-fe/index.html.  The deployed site consists of a javascript front end connected to this python Django backend.  The backend consists of several API endpoints that are fetched from the JS frontend depending on user input.  This project was unique in that the front end application was provided to us, and we had to build the backend application first in rails, then in express with node.js, and finally in a language of our choice.  I choose python Django because of its prevalence in the GIS and scientific communities.  Although there was some initial adjustment to Django, I was impressed with how easy it was to adapt to a new framework after building most of my previous applications in Rails.  I plan on building on my python skills by exploring Flask, and specifically how Flask can combine with PostGIS to perform custom spatial queries on datasets.
 
-See the deployed project here: [StreamFinder](https://still-reef-30303.herokuapp.com/)
+See the deployed project here: [Quantified Self](https://amj133.github.io/quantified-self-fe/index.html)
 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
 
-1. clone down this project and change into the directory
+1. clone down this project, change into the directory, and install all packages with pip
 ```
 git clone https://github.com/amj133/quantified-self-py
-bundle install
+pip install -r requirement.txt
 ```
 2. create and migrate the database
 ```
@@ -27,8 +27,9 @@ python manage.py runserver 3000
 
 ### Prerequisites
 
-* Python 3
-* Django 1.11
+* pip
+* Python 3+
+* Django 1.11.13
 
 ## Running the tests
 
