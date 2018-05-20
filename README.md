@@ -4,7 +4,9 @@ Visit the deployed app at https://amj133.github.io/quantified-self-fe/index.html
 
 See the deployed project here: [Quantified Self](https://amj133.github.io/quantified-self-fe/index.html)
 See the Rails and Express versions of this project here: 
+
 [Quantified Self Rails Backend](https://github.com/amj133/quantified-self)
+
 [Quantified Self Express Backend](https://github.com/amj133/quantified_self_express)
 
 ## Getting Started
